@@ -55,11 +55,21 @@ func main() {
 	}
 
 	if request.Params.Release != "" {
-		poolName := filepath.Join(sourceDir, request.Params.Release)
-		lock, version, err = lockPool.ReleaseLock(poolName)
+
+		//Remove from pool
+		removePath := filepath.Join(sourceDir, request.Params.Release)
+		lock, version, err = lockPool.RemoveLock(removePath)
 		if err != nil {
-			fatal("releasing lock", err)
+			fatal("removing lock", err)
 		}
+
+		//Add to pool
+		lockPath := filepath.Join(sourceDir+"/used", request.Params.Release)
+		lock, version, err = lockPool.AddUnclaimedLock(lockPath)
+		if err != nil {
+			fatal("adding lock", err)
+		}
+
 	}
 
 	if request.Params.Add != "" {
