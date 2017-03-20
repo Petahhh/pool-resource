@@ -4,10 +4,10 @@
 set -e -u -x
 
 export TMPDIR=/tmp
-export GOPATH=$PWD/gopath
+export GOPATH=$HOME/workspace/golang
 export PATH=$GOPATH/bin:$PATH
 
-BUILD_DIR=$PWD/built-resource
+BUILD_DIR=$PWD/../built-resource
 
 cd $GOPATH/src/github.com/concourse/pool-resource
 
@@ -18,5 +18,6 @@ go install github.com/onsi/ginkgo/ginkgo
 
 CGO_ENABLED=1 ginkgo -race -r -p "$@"
 
-cp -a test/ assets/ Dockerfile $BUILD_DIR
-go build -o $BUILD_DIR/built-out ./cmd/out
+cp -R test/ assets/ Dockerfile $BUILD_DIR
+GOOS=linux go build -o $BUILD_DIR/built-out ./cmd/out
+
