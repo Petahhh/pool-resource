@@ -57,7 +57,7 @@ func main() {
 	if request.Params.Release != "" {
 
 		usedSource := request.Source
-		usedSource.Pool = usedSource.Pool + "/used"
+		usedSource.Pool = usedSource.Pool + "/dirty"
 		usedLockPool := out.NewLockPool(usedSource, os.Stderr)
 
 		//Add to pool
